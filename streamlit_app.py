@@ -5,11 +5,11 @@
 # Usage: python -m streamlit run run_rec.py
 
 import streamlit as st
-from plans.explainability import Explainability
+from explainability import Explainability
 import matplotlib.pyplot as plt
-from lib.utils import accessProperty
-from data.oce_taxonomies import oce_countries, oce_industries, oce_regions, oce_products
-from plans.recapi import run_testcase, get_start_points, run_testcase_oce, run_testcase_algo1, oce_es_rec
+from utils import accessProperty
+from oce_taxonomies import oce_countries, oce_industries, oce_regions, oce_products
+from recapi import run_testcase, get_start_points, run_testcase_oce, run_testcase_algo1, oce_es_rec
 
 @st.cache(allow_output_mutation=True)
 def get_result(testcase, mode=2):
