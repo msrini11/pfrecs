@@ -49,7 +49,8 @@ def run_recapi(tst, node_keys, default_algo, k=10):
             "content_pool_id": "00f66f7b-7f42-44e1-b62a-4b7c25b9e514",
             "recommendation_count": k,
             "algorithm": default_algo,
-            "debug": True
+            "debug": True,
+            "params_must_flag": accessProperty("params_must_flag", tst, False)
         })
         req_filter_keys = [x for x in node_keys if x.endswith("_filter")]
         soft_keys = ["client_product", "client_industry", "client_region", "client_country"]
