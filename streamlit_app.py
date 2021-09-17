@@ -257,7 +257,7 @@ def visualize_algo2(dat, thresh, start_points, node_option="name", nodes_n=0, co
                 with bexp:
                     for line in doclines:
                         st.markdown(line)
-            st.pyplot(fig)
+            # st.pyplot(fig)
         else:
             viz.viz_graph(grph, nodes, cons_sel, layout_sel)
             st.pyplot(fig)
