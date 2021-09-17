@@ -155,7 +155,7 @@ class RunRecs:
         with st.sidebar:
             st.markdown('**PathFactory**')
             with st.form(key='rec-params'):
-                testcase = {"recommendation_count": 10, "debug": True, , "params_must_flag": False}
+                testcase = {"recommendation_count": 10, "debug": True, "params_must_flag": False}
                 inds = st.multiselect(
                     "OCE Industry",
                     oce_industries,
