@@ -155,7 +155,7 @@ class RunRecs:
         with st.sidebar:
             st.markdown('**PathFactory**')
             with st.form(key='rec-params'):
-                testcase = {"recommendation_count": 10, "debug": True}
+                testcase = {"recommendation_count": 10, "debug": True, , "params_must_flag": False}
                 inds = st.multiselect(
                     "OCE Industry",
                     oce_industries,
@@ -182,6 +182,15 @@ class RunRecs:
                     oce_countries,
                     default=[]
                 )
+                #
+                aor_options = ['OR', 'AND']
+                aor_sel = st.radio("And or OR", aor_options, index=0)
+                if aor_sel == 'OR':
+                    params_must_flag = False
+                else:
+                    params_must_flag = True
+                testcase['params_must_flag'] = params_must_flag
+                #
                 testcase["client_country"] = crys
                 submit = st.form_submit_button("Run Recommendations")
                 if len(prods) + len(inds) + len(crys) + len(regs) > 0:
