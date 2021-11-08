@@ -43,7 +43,7 @@ class Explainability:
         self.weight_thresh = thresh
 
     def controller(self, dat, start_points=None, consolidate=0, layout="c"):
-        result_url = dat.get("url")
+        result_url = dat.get("normalized_url")     # dat.get("url")
         self.result_points = self.make_result_points(result_url)
         self.start_points = start_points if start_points else {}
         # Topic option indicator is to extract topic words from the topic, if present
@@ -119,8 +119,8 @@ class Explainability:
         result_ids = [self.typename_id_map.get(x) for x in self.result_points]
         deg2 = grph.out_degree(weight='weight')
         deg2 = sorted(deg2, key=lambda x: x[1], reverse=True)
-        print(deg2)
-        print(result_ids)
+        print("DEG2", deg2)
+        print("Result IDS", result_ids)
         # from_ids = [x[0] for x in deg2 if x[0] not in result_ids]
         # p = nx.algorithms.descendants(grph, result_ids[0])
         # Aggregate based on explicit (given) and implicit (indegree 0) start nodes. None implies this
@@ -278,7 +278,7 @@ class Explainability:
         result_urls = []
         c_data = {}
         for dat in data:
-            result_urls.append(dat.get("url"))
+            result_urls.append(dat.get("normalized_url"))      # "url"
             nodes, links = self.prep(dat)
             # update the dat to include the combined nodes, links
             dat["nodes"] = nodes
@@ -313,7 +313,8 @@ class Explainability:
             c_links.extend(links)
         # ---------------
         # c_links = [x for x in c_links if x['source'] != -999]
-        c_data.update({"explainability": {"nodes": c_nodes, "links": c_links}, "url": result_urls})
+        # c_data.update({"explainability": {"nodes": c_nodes, "links": c_links}, "url": result_urls})
+        c_data.update({"explainability": {"nodes": c_nodes, "links": c_links}, "normalized_url": result_urls})
         return c_data
 
     def prep(self, dat, topic_option=0):
