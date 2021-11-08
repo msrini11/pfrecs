@@ -5,11 +5,11 @@
 # Usage: python -m streamlit run run_rec.py
 
 import streamlit as st
-from explainability import Explainability
+from plans.explainability import Explainability
 import matplotlib.pyplot as plt
-from utils import accessProperty
-from oce_taxonomies import oce_countries, oce_industries, oce_regions, oce_products
-from recapi import run_testcase, get_start_points, run_testcase_oce, run_testcase_algo1, oce_es_rec
+from lib.utils import accessProperty
+from data.oce_taxonomies import oce_countries, oce_industries, oce_regions, oce_products
+from plans.recapi import run_testcase, get_start_points, run_testcase_oce, run_testcase_algo1, oce_es_rec
 
 @st.cache(allow_output_mutation=True)
 def get_result(testcase, mode=2):
@@ -155,6 +155,18 @@ class RunRecs:
         with st.sidebar:
             st.markdown('**PathFactory**')
             with st.form(key='rec-params'):
+                algo_ids = {'ALGO2': 2, 'OCE Rec': 3, 'ALGO1': 5}
+                algos = ['ALGO2', 'OCE Rec', 'ALGO1']
+                algos_sel = st.multiselect(
+                    "Outputs",
+                    algos,
+                    default=algos
+                )
+                algosid = 1
+                for sel in algos_sel:
+                    algosid *= algo_ids[sel]
+                self.mode = algosid
+                #
                 testcase = {"recommendation_count": 10, "debug": True, "params_must_flag": False}
                 inds = st.multiselect(
                     "OCE Industry",
@@ -182,6 +194,7 @@ class RunRecs:
                     oce_countries,
                     default=[]
                 )
+                testcase["client_country"] = crys
                 #
                 aor_options = ['OR', 'AND']
                 aor_sel = st.radio("And or OR", aor_options, index=0)
@@ -191,7 +204,6 @@ class RunRecs:
                     params_must_flag = True
                 testcase['params_must_flag'] = params_must_flag
                 #
-                testcase["client_country"] = crys
                 submit = st.form_submit_button("Run Recommendations")
                 if len(prods) + len(inds) + len(crys) + len(regs) > 0:
                     recm = get_result(testcase, self.mode)
@@ -216,7 +228,7 @@ def visualize_algo1(data):
     if not data:
         return
     for dat in data:
-        doc = dat.get('url')
+        doc = dat.get('recommended_url')
         titl = dat.get('title')
         contentid = dat.get('content_id')
         bexp = st.expander(doc)
