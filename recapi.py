@@ -46,10 +46,10 @@ def run_recapi(tst, node_keys, default_algo, k=10):
     try:
         req = {}
         req.update({
-            # "organization_id": "84722990-281f-4235-9553-2bbe88e52608",
+            # "organization_id": "0a404885-0ada-483d-94b1-4f549e4f9925",
             "organization_id": "328aa9e1-0fe0-48ac-8441-5ae8b6c3b336",
             "content_pool_id": "eed1ccb7-0857-4736-869c-253aea4d0e01",
-            # "content_pool_id": "00f66f7b-7f42-44e1-b62a-4b7c25b9e514",
+            # "content_pool_id": "6703a151-b164-4f1f-8f40-e33762cb4598",
             # "recommendation_count": k,
             "k": k,
             "algorithm": default_algo,
@@ -57,15 +57,21 @@ def run_recapi(tst, node_keys, default_algo, k=10):
             "params_must_flag": accessProperty("params_must_flag", tst, False)
         })
         req_filter_keys = [x for x in node_keys if x.endswith("_filter")]
-        soft_keys = ["client_product", "client_industry", "client_region", "client_country"]
+        # soft_keys = ["client_product", "client_industry", "client_region", "client_country"]
+        soft_keys_attrib_map = {
+            "client_product": "client_marketing_product",
+            "client_industry": "client_industry",
+            "client_region": "client_region",
+            "client_country": "client_country"
+        }
         for p in tst:
             if p in req_filter_keys:
                 req.update({p: tst[p]})
-            elif p in soft_keys:
+            elif p in soft_keys_attrib_map:
                 if "params" not in req:
                     req.update({"params": []})
                 req["params"].append({
-                    "attribute": p,
+                    "attribute": soft_keys_attrib_map[p],
                     "values": tst[p] if type(tst[p]) is list else [tst[p]]
                 })
         print (req)
