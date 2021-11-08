@@ -1,5 +1,5 @@
 import requests
-from lib.utils import accessProperty
+from utils import accessProperty
 
 def oce_es_rec(testcase, sep, node_keys, mode=2):
     start_points = get_start_points(testcase, sep, node_keys)
