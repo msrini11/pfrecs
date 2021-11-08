@@ -5,7 +5,7 @@
 # Usage: python -m streamlit run run_rec.py
 
 import streamlit as st
-from plans.explainability import Explainability
+from explainability import Explainability
 import matplotlib.pyplot as plt
 from lib.utils import accessProperty
 from data.oce_taxonomies import oce_countries, oce_industries, oce_regions, oce_products
