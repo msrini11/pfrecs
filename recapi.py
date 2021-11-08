@@ -1,5 +1,5 @@
 import requests
-from utils import accessProperty
+from lib.utils import accessProperty
 
 def oce_es_rec(testcase, sep, node_keys, mode=2):
     start_points = get_start_points(testcase, sep, node_keys)
@@ -26,10 +26,10 @@ def oce_es_rec(testcase, sep, node_keys, mode=2):
         oce_results, params = oce_read(params)
     if mode % 2 == 0:
         pf_result = run_recapi(testcase, node_keys, "algo2", rcnt)
-        pf_algo2 = accessProperty("docs", pf_result, [])
+        pf_algo2 = accessProperty("data", pf_result, [])
     if mode % 5 == 0:
         pf_result = run_recapi(testcase, node_keys, "algo1", rcnt)
-        pf_algo1 = accessProperty("docs", pf_result, [])
+        pf_algo1 = accessProperty("data", pf_result, [])
     res = {
         "pf_algo2": pf_algo2,
         "oce_recs": oce_results,
@@ -41,13 +41,17 @@ def oce_es_rec(testcase, sep, node_keys, mode=2):
 
 
 def run_recapi(tst, node_keys, default_algo, k=10):
-    url = "http://qa-recommender.pathfactory-development.com:7700/api/v3/relatedcontent"
+    # url = "http://qa-recommender.pathfactory-development.com:7700/api/v3/relatedcontent"
+    url = "http://qa-ci-recommend.pathfactory-development.com:7500/api/v3/ci-recommend/related-content"
     try:
         req = {}
         req.update({
-            "organization_id": "84722990-281f-4235-9553-2bbe88e52608",
-            "content_pool_id": "00f66f7b-7f42-44e1-b62a-4b7c25b9e514",
-            "recommendation_count": k,
+            # "organization_id": "84722990-281f-4235-9553-2bbe88e52608",
+            "organization_id": "328aa9e1-0fe0-48ac-8441-5ae8b6c3b336",
+            "content_pool_id": "eed1ccb7-0857-4736-869c-253aea4d0e01",
+            # "content_pool_id": "00f66f7b-7f42-44e1-b62a-4b7c25b9e514",
+            # "recommendation_count": k,
+            "k": k,
             "algorithm": default_algo,
             "debug": True,
             "params_must_flag": accessProperty("params_must_flag", tst, False)
